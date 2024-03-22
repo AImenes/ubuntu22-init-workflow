@@ -13,7 +13,7 @@ sudo apt upgrade -y
 
 sudo apt dist-upgrade -y
 
-sudo apt install curl wget
+sudo apt install curl wget -y
 
 sudo apt install regolith-desktop regolith-session-flashback regolith-look-nord -y
 
