@@ -14,16 +14,16 @@
   become: yes
 
   tasks:
+    - name: Update the OS
+      ansible.builtin.apt:
+        upgrade: dist
+   
     - name: Update all packages
       ansible.builtin.apt:
         update_cache: yes
         name: "*"
         state: latest
-
-    - name: Update the OS
-      ansible.builtin.apt:
-        upgrade: dist
-    
+   
     - name: Media codecs
       ansible.builtin.apt:
         name: ubuntu-restricted-extras
@@ -106,11 +106,11 @@
     - name: Pulling ohmyzsh
       ansible.builtin.get_url:
         url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
-        dest: /tmp/install.sh
+        dest: "{{ home_path }}/install.sh"
         mode: '0755'
 
     - name: Executing ohmyzsh installer
-      ansible.builtin.shell: /tmp/install.sh
+      ansible.builtin.shell: "{{ home_path }}/install.sh"
     
     - name: Pulling ZSH-autosuggestions
       ansible.builtin.git:
