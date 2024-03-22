@@ -1,0 +1,131 @@
+---
+
+- name: Debug
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Debug 1
+      ansible.builtin.debug:
+        msg: "{{ home_path }}"
+
+- name: Initial apt installs
+  hosts: localhost
+  connection: local
+  become: yes
+
+  tasks:
+    - name: Update all packages
+      ansible.builtin.apt:
+        update_cache: yes
+        name: "*"
+        state: latest
+
+    - name: Update the OS
+      ansible.builtin.apt:
+        upgrade: dist
+    
+    - name: Media codecs
+      ansible.builtin.apt:
+        name: ubuntu-restricted-extras
+        state: latest
+
+    - name: Install Zsh, Curl, Git, Vim, ufw, vlc
+      ansible.builtin.apt:
+        pkg:
+          - zsh
+          - curl
+          - vim
+          - git
+          - ufw
+          - vlc
+        state: latest
+        update_cache: true
+
+    - name: Installing networking tools - Wireshark, nmap
+      ansible.builtin.apt:
+        pkg:
+          - wireshark
+          - nmap
+        state: latest
+
+- name: Initial snap installs
+  hosts: localhost
+  connection: local
+  become: true
+
+  tasks:
+    - name: Install Snap Visual Studio Code
+      community.general.snap:
+        name: code
+        classic: yes
+
+    - name: Install Snap Discord
+      community.general.snap:
+        name: discord
+        classic: yes
+
+    - name: Install Postman
+      community.general.snap:
+        name: postman
+        classic: yes
+
+
+- name: Change default Shell
+  hosts: localhost
+  connection: local
+  become: yes
+  tasks:
+    - name: Changing shell
+      ansible.builtin.shell: chsh -s $(which zsh)
+
+
+- name: Installing better terminal environment
+  hosts: localhost
+  connection: local
+  become: yes
+  tasks:
+    - name: Pulling ohmyzsh
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+        dest: /tmp/install.sh
+        mode: '0755'
+
+    - name: Executing ohmyzsh installer
+      ansible.builtin.shell: /tmp/install.sh
+    
+    - name: Pulling ZSH-autosuggestions
+      ansible.builtin.git:
+        repo: https://github.com/zsh-users/zsh-autosuggestions
+        dest: "{{ home_path }}/.zsh/zsh-autosuggestions" 
+      
+    - name: Adding autosuggestions to ZSHRC
+      ansible.builtin.lineinfile:
+        path: "{{ home_path }}/.zshrc"
+        line: source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+    - name: ZSH highlighting
+      ansible.builtin.git:
+        repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
+        dest: "{{ home_path }}/.zsh/zsh-syntax-highlighting"
+
+    - name: ZSH hightlighting add to ZSHRC
+      ansible.builtin.lineinfile:
+        path: "{{ home_path}}/.zshrc"
+        line: source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+    - name: Pulling Powerlevel10k theme
+      ansible.builtin.git:
+        repo: https://github.com/romkatv/powerlevel10k.git
+        dest: "{{ home_path }}/.zsh/powerlevel10k"
+        depth: 1
+        clone: yes
+
+    - name: Installing Powerlevel10k
+      ansible.builtin.lineinfile:
+        path: "{{ home_path }}/.zshrc" 
+        line: source ~/.zsh/powerlevel10k/powerlevel10k.zsh-theme
+      
+
+
+
+
