@@ -5,10 +5,10 @@ sudo apt install build-essential python3 python3-pip nodejs npm default-jdk zsh 
 
 sudo apt install wireshark nmap -y
 
-sudo snap install discord --classic
+sudo snap install discord --classic -y
 
-sudo snap install code --classic
+sudo snap install code --classic -y
 
-sudo snap install postman --classic
+sudo snap install postman --classic -y
 
 
