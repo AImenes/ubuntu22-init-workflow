@@ -1,6 +1,6 @@
 #bin/bash
 
-sudo apt install build-essential python3 python3-pip nodejs npm default-jdk zsh wget curl vim htop tree gparted git ufw vlc -y
+sudo apt install build-essential python3 python3-pip python3-venv nodejs npm default-jdk zsh wget curl vim htop tree gparted git ufw vlc -y
 
 sudo apt install wireshark nmap -y
 
