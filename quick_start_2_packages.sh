@@ -6,8 +6,7 @@ sudo apt install wireshark nmap -y
 
 sudo snap install discord --classic
 
-sudo snap install code --classic
-
 sudo snap install postman --classic
 
 
+sudo snap install code --classic
