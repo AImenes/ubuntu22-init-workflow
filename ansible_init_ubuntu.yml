@@ -29,12 +29,22 @@
         name: ubuntu-restricted-extras
         state: latest
 
-    - name: Install Zsh, Curl, Git, Vim, ufw, vlc
+    - name: Install Build Essential, python, pip, nodejs, npm, default,jdk, Zsh, wget, Curl, htop, gparted, Git, Vim, ufw, vlc
       ansible.builtin.apt:
         pkg:
+          - build-essential 
+          - python3
+          - python3-pip
+          - nodejs
+          - npm
+          - default-jdk  
           - zsh
+          - wget
           - curl
           - vim
+          - htop
+          - tree
+          - gparted
           - git
           - ufw
           - vlc
@@ -69,6 +79,15 @@
         name: postman
         classic: yes
 
+- name: Touch ZSHRC 
+  hosts: localhost
+  connection: local
+  tasks:
+  - name: Touch a file
+    ansible.builtin.file:
+      path: "{{ home_path }}/.zshrc"
+      state: touch
+      mode: '0755'
 
 - name: Change default Shell
   hosts: localhost
